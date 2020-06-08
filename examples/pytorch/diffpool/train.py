@@ -78,7 +78,7 @@ def arg_parse():
     parser.set_defaults(dataset='ENZYMES',
                         pool_ratio=0.15,
                         num_pool=1,
-                        cuda=1,
+                        cuda=0,
                         lr=1e-3,
                         clip=2.0,
                         batch_size=20,
@@ -179,8 +179,7 @@ def graph_classify_task(prog_args):
 
     print("model init finished")
     print("MODEL:::::::", prog_args.method)
-    if prog_args.cuda:
-        model = model.cuda()
+    model = model.cuda()
 
     logger = train(
         train_dataloader,
@@ -223,8 +222,7 @@ def train(dataset, model, prog_args, same_feat=True, val_dataset=None):
                                         model.parameters()), lr=0.001)
     early_stopping_logger = {"best_epoch": -1, "val_acc": -1}
 
-    if prog_args.cuda > 0:
-        torch.cuda.set_device(0)
+    torch.cuda.set_device(0)
     for epoch in range(prog_args.epoch):
         begin_time = time.time()
         model.train()
