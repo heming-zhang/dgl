@@ -202,7 +202,7 @@ def collate_fn(batch):
     # batch graphs and cast to PyTorch tensor
     for graph in graphs:
         for (key, value) in graph.ndata.items():
-            graph.ndata[key] = torch.FloatTensor(value)
+            graph.ndata[key] = value.type(torch.FloatTensor)
     batched_graphs = dgl.batch(graphs)
 
     # cast to PyTorch tensor
